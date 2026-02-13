@@ -26,16 +26,14 @@ jobs:
         with:
           fetch-depth: 0
       
-      - name: Setup Node.js with npm registry
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          registry-url: 'https://registry.npmjs.org'
           cache: ''  # No cache - package is part of workspace
-          # Enable OIDC authentication
-          always-auth: true
-          # DO NOT pass token here - setup-node will auto-detect OIDC
-          # Passing GITHUB_TOKEN overrides OIDC detection
+          # No registry-url: prevents setup-node from writing _authToken=${NODE_AUTH_TOKEN}
+          # to ~/.npmrc, which would override OIDC Trusted Publisher authentication.
+          # NPM_CONFIG_PROVENANCE=true (set in env) handles OIDC auth automatically.
       
       - name: Verify OIDC token availability
         run: |
@@ -62,31 +60,6 @@ jobs:
           npm config get registry
           npm config get @dcyfr:registry || echo "@dcyfr scope not configured (will use default)"
       
-      - name: Authenticate with npm using OIDC
-        run: |
-          echo "🔐 Setting up npm authentication with OIDC..."
-          echo "Registry: $(npm config get registry)"
-          echo "NODE_AUTH_TOKEN is set: ${NODE_AUTH_TOKEN:+yes}"
-          
-          if [ -n "$NODE_AUTH_TOKEN" ]; then
-            echo "✅ OIDC token available for npm authentication"
-            echo "Token length: ${#NODE_AUTH_TOKEN}"
-          else
-            echo "❌ NODE_AUTH_TOKEN not available - OIDC may not be working"
-            exit 1
-          fi
-          
-          # Test authentication without publishing
-          echo "🧪 Testing npm authentication..."
-          npm whoami || echo "⚠️ npm authentication test failed - this is expected for OIDC"
-          
-          # Check npm configuration
-          echo "📋 npm configuration:"
-          npm config list
-          
-          echo "🏃‍♂️ Attempting npm ping to registry..."
-          npm ping || echo "⚠️ npm ping failed"
-      
       - name: Run linter
         run: npm run lint
         continue-on-error: true
@@ -107,5 +80,5 @@ jobs:
           createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # setup-node auto-configures npm auth via OIDC when registry-url is set
-          # Changesets will inherit npm configuration from setup-node step
+          # npm OIDC auth is handled automatically via NPM_CONFIG_PROVENANCE=true
+          # No NODE_AUTH_TOKEN needed — Trusted Publisher provides authentication
