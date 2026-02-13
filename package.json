@@ -58,6 +58,9 @@
   ],
   "author": "DCYFR <hello@dcyfr.ai>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dcyfr/dcyfr-ai-docker.git"
