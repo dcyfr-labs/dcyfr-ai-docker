@@ -60,6 +60,7 @@ spec:
       labels:
         app: dcyfr-ai-app
     spec:
+      automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 1001
