@@ -115,3 +115,8 @@ npm run clean                       # Remove containers + volumes
 ---
 
 **Last Updated:** February 5, 2026
+
+## Quality Gates
+- TypeScript: 0 errors (`npm run typecheck`)
+- Tests: ≥99% pass rate (`npm run test`)
+- Lint: 0 errors (`npm run lint`)
