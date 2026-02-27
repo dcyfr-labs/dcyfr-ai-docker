@@ -1,15 +1,23 @@
 # @dcyfr/ai-docker
 
+> **⚠️ PACKAGE DEPRECATED ON NPM (February 27, 2026)**  
+> This package was published to npm but has been **deprecated**. It is a template collection, not a library.  
+> **Use this repo as:**
+> - 📋 GitHub Template: Click "Use this template" above
+> - 📦 Direct clone: `git clone https://github.com/dcyfr/dcyfr-ai-docker`
+> - 📖 Reference: Copy Dockerfiles into your project
+>
+> This package is now marked `"private": true` to prevent future publication.
+
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/dcyfr/dcyfr-ai-docker)
 
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Template](https://img.shields.io/badge/Type-Template-blue?style=flat-square&logo=github)](https://github.com/dcyfr/dcyfr-ai-docker)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](./LICENSE)
 
 **Production-ready Docker containerization templates for DCYFR AI applications.**
 
 Multi-stage Dockerfiles, Docker Compose configurations, Nginx reverse proxy, health checks, security hardening, and Kubernetes manifests — all designed to work with any DCYFR AI template.
-
-> **📦 Starter Template** — This is a **starter template** for cloning, not an npm package. Use `git clone` or download the source to add Docker support to your application. This package is marked `private: true` and is not published to npm.
 
 ## ✨ Features
 
