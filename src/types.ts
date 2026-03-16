@@ -26,7 +26,7 @@ export const DockerBuildConfigSchema = z.object({
   /** Install native build tools (python3, make, g++) */
   nativeDeps: z.boolean().default(false),
   /** Custom labels */
-  labels: z.record(z.string()).default({}),
+  labels: z.record(z.string(), z.string()).default({}),
 });
 
 export type DockerBuildConfig = z.infer<typeof DockerBuildConfigSchema>;
@@ -48,7 +48,7 @@ export const ComposeServiceSchema = z.object({
   /** Port mappings (host:container) */
   ports: z.array(z.string()).default([]),
   /** Environment variables */
-  environment: z.record(z.string()).default({}),
+  environment: z.record(z.string(), z.string()).default({}),
   /** Volume mounts */
   volumes: z.array(z.string()).default([]),
   /** Depends on services */
