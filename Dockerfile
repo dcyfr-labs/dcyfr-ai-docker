@@ -1,7 +1,7 @@
 # ==============================================================================
 # DCYFR AI Docker - Production Multi-Stage Dockerfile
 # ==============================================================================
-# Optimized multi-stage build for Node.js/TypeScript AI applications.
+# Optimized multi-stage build for Bun/TypeScript AI applications.
 # Produces minimal, secure production images with non-root user.
 #
 # Build:  docker build -t dcyfr-ai-app .
@@ -11,7 +11,7 @@
 # ------------------------------------------------------------------------------
 # Stage 1: Dependencies
 # ------------------------------------------------------------------------------
-FROM node:22-alpine AS deps
+FROM oven/bun:1-alpine AS deps
 
 WORKDIR /app
 
@@ -19,35 +19,35 @@ WORKDIR /app
 RUN apk add --no-cache python3 make g++
 
 # Copy package files for dependency caching
-COPY package.json package-lock.json* ./
+COPY package.json bun.lock* ./
 
 # Install production dependencies only
-RUN npm ci --omit=dev && npm cache clean --force
+RUN bun install --frozen-lockfile --production
 
 # ------------------------------------------------------------------------------
 # Stage 2: Build
 # ------------------------------------------------------------------------------
-FROM node:22-alpine AS build
+FROM oven/bun:1-alpine AS build
 
 WORKDIR /app
 
 # Copy package files
-COPY package.json package-lock.json* ./
+COPY package.json bun.lock* ./
 
 # Install all dependencies (including devDependencies for build)
-RUN npm ci && npm cache clean --force
+RUN bun install --frozen-lockfile
 
 # Copy source code
 COPY tsconfig.json ./
 COPY src/ ./src/
 
 # Build TypeScript
-RUN npm run build
+RUN bun run build
 
 # ------------------------------------------------------------------------------
 # Stage 3: Production
 # ------------------------------------------------------------------------------
-FROM node:22-alpine AS production
+FROM oven/bun:1-alpine AS production
 
 # Security: add labels
 LABEL maintainer="DCYFR <hello@dcyfr.ai>"
@@ -87,4 +87,4 @@ EXPOSE ${PORT:-3000}
 ENV NODE_ENV=production
 
 # Start application
-CMD ["node", "dist/index.js"]
+CMD ["bun", "dist/index.js"]
