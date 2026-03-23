@@ -3,6 +3,7 @@
 > **⚠️ PACKAGE DEPRECATED ON NPM (February 27, 2026)**  
 > This package was published to npm but has been **deprecated**. It is a template collection, not a library.  
 > **Use this repo as:**
+>
 > - 📋 GitHub Template: Click "Use this template" above
 > - 📦 Direct clone: `git clone https://github.com/dcyfr/dcyfr-ai-docker`
 > - 📖 Reference: Copy Dockerfiles into your project
@@ -18,6 +19,15 @@
 **Production-ready Docker containerization templates for DCYFR AI applications.**
 
 Multi-stage Dockerfiles, Docker Compose configurations, Nginx reverse proxy, health checks, security hardening, and Kubernetes manifests — all designed to work with any DCYFR AI template.
+
+## About DCYFR
+
+`@dcyfr/ai-docker` is maintained by **DCYFR Labs** as part of the DCYFR infrastructure toolkit portfolio.
+
+- **DCYFR** is a registered trademark of DCYFR Labs.
+- Primary domain: [www.dcyfr.ai](https://www.dcyfr.ai)
+- Trademark guidance: [../TRADEMARK.md](../TRADEMARK.md)
+- Licensing details: [LICENSE](./LICENSE)
 
 ## ✨ Features
 
@@ -162,11 +172,15 @@ npm run generate -- --output ./my-project
 ### Programmatic API
 
 ```typescript
-import { generateDockerfile, generateProject, validateDockerfile } from '@dcyfr/ai-docker';
+import {
+  generateDockerfile,
+  generateProject,
+  validateDockerfile,
+} from "@dcyfr/ai-docker";
 
 // Generate a Dockerfile
 const dockerfile = generateDockerfile({
-  nodeVersion: '22-alpine',
+  nodeVersion: "22-alpine",
   port: 3000,
   multiStage: true,
   nonRoot: true,
@@ -175,10 +189,10 @@ const dockerfile = generateDockerfile({
 
 // Generate full project
 const files = generateProject({
-  appType: 'api',
-  database: 'postgres',
+  appType: "api",
+  database: "postgres",
   redis: true,
-  target: 'both',
+  target: "both",
 });
 
 // Validate
@@ -248,16 +262,16 @@ npm run test:coverage # Coverage report
 
 Works with all DCYFR AI templates:
 
-| Template | Supported | Notes |
-|----------|-----------|-------|
-| dcyfr-ai-agents | ✅ | Agent server containerization |
-| dcyfr-ai-rag | ✅ | RAG pipeline + vector DB |
-| dcyfr-ai-graphql | ✅ | GraphQL API server |
-| dcyfr-ai-api | ✅ | REST API server |
-| dcyfr-ai-web | ✅ | Next.js full-stack |
-| dcyfr-ai-react | ✅ | Static SPA (Nginx serve) |
-| dcyfr-ai-nodejs | ✅ | Express server |
-| dcyfr-ai-code-gen | ✅ | Code generation service |
+| Template          | Supported | Notes                         |
+| ----------------- | --------- | ----------------------------- |
+| dcyfr-ai-agents   | ✅        | Agent server containerization |
+| dcyfr-ai-rag      | ✅        | RAG pipeline + vector DB      |
+| dcyfr-ai-graphql  | ✅        | GraphQL API server            |
+| dcyfr-ai-api      | ✅        | REST API server               |
+| dcyfr-ai-web      | ✅        | Next.js full-stack            |
+| dcyfr-ai-react    | ✅        | Static SPA (Nginx serve)      |
+| dcyfr-ai-nodejs   | ✅        | Express server                |
+| dcyfr-ai-code-gen | ✅        | Code generation service       |
 
 ## 🤝 Contributing
 

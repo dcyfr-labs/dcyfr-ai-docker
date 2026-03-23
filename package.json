@@ -53,7 +53,7 @@
     "multi-stage",
     "production"
   ],
-  "author": "DCYFR <hello@dcyfr.ai>",
+  "author": "DCYFR Labs",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -61,5 +61,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dcyfr/dcyfr-ai-docker.git"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/dcyfr/dcyfr-ai-docker/issues"
+  },
+  "homepage": "https://github.com/dcyfr/dcyfr-ai-docker#readme"
 }
