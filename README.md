@@ -1,5 +1,13 @@
 # @dcyfr/ai-docker
 
+<!-- README-META
+  tlp_clearance: GREEN
+  status: deprecated
+  name: dcyfr-ai-docker
+  description: Production-ready Docker containerization templates for DCYFR AI applications
+  last_validated: 2026-03-29
+-->
+
 > **⚠️ PACKAGE DEPRECATED ON NPM (February 27, 2026)**  
 > This package was published to npm but has been **deprecated**. It is a template collection, not a library.  
 > **Use this repo as:**
