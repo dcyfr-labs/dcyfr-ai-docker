@@ -60,10 +60,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dcyfr/dcyfr-ai-docker.git"
+    "url": "git+https://github.com/dcyfr-labs/dcyfr-ai-docker.git"
   },
   "bugs": {
-    "url": "https://github.com/dcyfr/dcyfr-ai-docker/issues"
+    "url": "https://github.com/dcyfr-labs/dcyfr-ai-docker/issues"
   },
-  "homepage": "https://github.com/dcyfr/dcyfr-ai-docker#readme"
+  "homepage": "https://github.com/dcyfr-labs/dcyfr-ai-docker#readme"
 }
