@@ -1,0 +1,8 @@
+{
+  "repo_notes": [
+    {
+      "content": "Docker containerization for DCYFR AI services. Document the Dockerfile patterns, multi-stage builds, container orchestration, environment configuration, and deployment strategies for containerized AI workloads.",
+      "author": "DCYFR Engineering"
+    }
+  ]
+}
