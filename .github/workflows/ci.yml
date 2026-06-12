@@ -75,4 +75,4 @@ jobs:
       - name: Build development image
         run: docker build -f Dockerfile.dev -t dcyfr-ai-docker:dev .
       - name: Verify production image
-        run: docker run --rm dcyfr-ai-docker:test node --version
+        run: docker run --rm dcyfr-ai-docker:test bun --version
