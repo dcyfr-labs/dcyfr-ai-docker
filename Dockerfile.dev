@@ -17,8 +17,9 @@ WORKDIR /app
 # Install system dependencies
 RUN apk add --no-cache python3 make g++ curl
 
-# Copy package files
-COPY package.json package-lock.json* ./
+# Copy package files (.npmrc carries legacy-peer-deps=true, which the
+# lockfile was generated under — npm ci fails the sync check without it)
+COPY package.json package-lock.json* .npmrc* ./
 
 # Install all dependencies (including devDependencies)
 RUN npm ci && npm cache clean --force
