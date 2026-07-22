@@ -5,7 +5,7 @@
   status: deprecated
   name: dcyfr-ai-docker
   description: Production-ready Docker containerization templates for DCYFR AI applications
-  last_validated: 2026-03-29
+  last_validated: 2026-07-11
 -->
 
 > **⚠️ PACKAGE DEPRECATED ON NPM (February 27, 2026)**  
@@ -13,15 +13,16 @@
 > **Use this repo as:**
 >
 > - 📋 GitHub Template: Click "Use this template" above
-> - 📦 Direct clone: `git clone https://github.com/dcyfr/dcyfr-ai-docker`
+> - 📦 Direct clone: `git clone https://github.com/dcyfr-labs/dcyfr-ai-docker`
 > - 📖 Reference: Copy Dockerfiles into your project
 >
 > This package is now marked `"private": true` to prevent future publication.
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/dcyfr-labs/dcyfr-ai-docker)
 
+[![CI](https://github.com/dcyfr-labs/dcyfr-ai-docker/actions/workflows/ci.yml/badge.svg)](https://github.com/dcyfr-labs/dcyfr-ai-docker/actions/workflows/ci.yml)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
-[![Template](https://img.shields.io/badge/Type-Template-blue?style=flat-square&logo=github)](https://github.com/dcyfr/dcyfr-ai-docker)
+[![Template](https://img.shields.io/badge/Type-Template-blue?style=flat-square&logo=github)](https://github.com/dcyfr-labs/dcyfr-ai-docker)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](./LICENSE)
 
 **Production-ready Docker containerization templates for DCYFR AI applications.**
@@ -34,8 +35,8 @@ Multi-stage Dockerfiles, Docker Compose configurations, Nginx reverse proxy, hea
 
 - **DCYFR** is a registered trademark of DCYFR Labs.
 - Primary domain: [www.dcyfr.ai](https://www.dcyfr.ai)
-- Trademark guidance: [../TRADEMARK.md](../TRADEMARK.md)
 - Licensing details: [LICENSE](./LICENSE)
+- Security policy: [SECURITY.md](./SECURITY.md)
 
 ## ✨ Features
 
@@ -75,6 +76,11 @@ docker compose down
 cp .env.example .env
 # Edit .env with production values
 
+# Required: the production stack refuses to start without these
+# (docker-compose.prod.yml uses ${VAR:?} for both — they are NOT in .env.example)
+echo 'DB_PASSWORD=<strong-password>' >> .env
+echo 'REDIS_PASSWORD=<strong-password>' >> .env
+
 # Build and start production stack
 docker compose -f docker-compose.prod.yml up -d
 
@@ -99,11 +105,16 @@ docker compose -f docker-compose.prod.yml logs -f
 
 ```
 dcyfr-ai-docker/
-├── Dockerfile                 # Production multi-stage build
-├── Dockerfile.dev             # Development with hot reload
+├── Dockerfile                 # Production multi-stage build (Bun)
+├── Dockerfile.dev             # Development with hot reload (Node + npm)
 ├── docker-compose.yml         # Development stack
 ├── docker-compose.prod.yml    # Production stack (Nginx + security)
+├── docker-compose.agent.yml   # Autonomous agent container stack
+├── bun.lock                   # Bun lockfile (production image installs)
 ├── .dockerignore              # Build context exclusions
+├── agent/
+│   ├── Dockerfile             # Agent container image
+│   └── agent-entrypoint.sh    # Agent container entrypoint
 ├── src/
 │   ├── index.ts               # Public API exports
 │   ├── types.ts               # Zod schemas & TypeScript types
@@ -120,6 +131,7 @@ dcyfr-ai-docker/
 │   ├── build.sh               # Build Docker images
 │   ├── run.sh                 # Run Docker stack
 │   ├── deploy.sh              # Build, tag, push to registry
+│   ├── oidc-test-trigger.sh   # Trigger the OIDC test workflow
 │   └── apply-agent-egress-policy.sh # Apply DOCKER-USER egress allowlist for agents
 ├── examples/
 │   ├── full-stack.yml         # Full-stack (app + DB + Redis + Nginx)
@@ -129,8 +141,12 @@ dcyfr-ai-docker/
 │       └── ingress.yaml       # K8s Ingress with TLS
 ├── tests/
 │   ├── validator.test.ts      # Validator tests
-│   └── generator.test.ts      # Generator tests
+│   ├── generator.test.ts      # Generator tests
+│   ├── index.test.ts          # Public API tests
+│   ├── types.test.ts          # Schema/type tests
+│   └── agent-image.integration.test.ts # Agent image integration tests
 └── docs/
+    ├── API.md                 # Programmatic API reference
     ├── DEVELOPMENT.md         # Development workflow guide
     ├── PRODUCTION.md          # Production deployment guide
     └── TROUBLESHOOTING.md     # Common issues & solutions
@@ -212,11 +228,15 @@ console.log(result.score); // 100
 
 ### Multi-Stage Build (Production)
 
+The production `Dockerfile` is **Bun-based** (`oven/bun:1-alpine`, pinned by digest) and installs from `bun.lock`:
+
 ```
-Stage 1: deps        → npm ci --omit=dev (production deps only)
-Stage 2: build       → npm ci + tsc (compile TypeScript)
-Stage 3: production  → Copy deps + dist (minimal final image)
+Stage 1: deps        → bun install --frozen-lockfile --production (production deps only)
+Stage 2: build       → bun install --frozen-lockfile + bun run build (tsc)
+Stage 3: production  → Copy deps + dist; CMD ["bun", "dist/index.js"]
 ```
+
+The development image (`Dockerfile.dev`) still uses Node 22 + `npm ci` with bind mounts for hot reload.
 
 ### Security Hardening
 
@@ -231,6 +251,7 @@ Stage 3: production  → Copy deps + dist (minimal final image)
 
 Autonomous agent containers should only reach required upstream endpoints.
 
+- Agent image: `agent/Dockerfile` + `agent/agent-entrypoint.sh`, orchestrated by `docker-compose.agent.yml`
 - Allowlist file: `configs/network-policy/agent-egress-allowlist.txt`
 - Apply policy script: `scripts/apply-agent-egress-policy.sh`
 - Default allowed hosts:
@@ -285,10 +306,14 @@ Works with all DCYFR AI templates:
 
 Contributions welcome! See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
+## 🔒 Security
+
+See [SECURITY.md](./SECURITY.md) for the vulnerability reporting policy.
+
 ## 📄 License
 
 MIT — see [LICENSE](./LICENSE) for details.
 
 ---
 
-**Built with ❤️ by [DCYFR](https://dcyfr.ai)** | [GitHub](https://github.com/dcyfr)
+**Built with ❤️ by [DCYFR](https://dcyfr.ai)** | [GitHub](https://github.com/dcyfr-labs)
