@@ -1,0 +1,82 @@
+name: Dependabot auto-merge — bun.lock sync
+
+# Regenerates bun.lock when a Dependabot npm bump edits package.json, so the
+# Dockerfile's `bun install --frozen-lockfile` (Docker Build Test) passes and the
+# PR can auto-merge. Dependabot's npm ecosystem updates package.json but NOT
+# bun.lock, so every npm bump otherwise drifts the lockfile and reddens CI.
+#
+# History: the previous sync automation was removed in #102 because it required a
+# GitHub App token that was never provisioned, and its *failing* check broke
+# auto-merge on every Dependabot PR. This version fixes both: it (1) skips cleanly
+# when the token is absent (no red check), and (2) its name starts with
+# "Dependabot auto-merge" so the centralized poller (dcyfr-labs/.github) excludes
+# its check from the fail bucket regardless.
+#
+# ── ONE-TIME ACTIVATION (repo admin) ────────────────────────────────────────────
+# Create a fine-grained PAT with `Contents: Read and write` scoped to THIS repo,
+# then add it as a **Dependabot** secret (NOT an Actions secret — Actions secrets
+# are invisible to Dependabot-triggered runs):
+#     gh secret set LOCKFILE_PAT --app dependabot --repo dcyfr-labs/dcyfr-ai-docker
+# Until that secret exists this workflow is a clean no-op.
+
+on:
+  pull_request:
+    paths:
+      - package.json
+      - bun.lock
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bun-lock-sync-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for LOCKFILE_PAT (skip cleanly if absent)
+        id: guard
+        env:
+          TOKEN: ${{ secrets.LOCKFILE_PAT }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "::notice::LOCKFILE_PAT not provisioned in Dependabot secrets — skipping bun.lock sync."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout PR branch
+        if: ${{ steps.guard.outputs.enabled == 'true' }}
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.LOCKFILE_PAT }}
+
+      - name: Regenerate bun.lock in the Dockerfile's pinned bun image
+        if: ${{ steps.guard.outputs.enabled == 'true' }}
+        run: |
+          IMG="$(grep -m1 -oE 'oven/bun:[^ ]+' Dockerfile)"
+          if [ -z "$IMG" ]; then
+            echo "::error::Could not read the bun image from Dockerfile"; exit 1
+          fi
+          echo "Regenerating bun.lock with $IMG"
+          docker run --rm -v "$PWD":/app -w /app "$IMG" bun install
+          sudo chown "$(id -u):$(id -g)" bun.lock
+
+      - name: Commit & push if bun.lock changed
+        if: ${{ steps.guard.outputs.enabled == 'true' }}
+        run: |
+          if git diff --quiet -- bun.lock; then
+            echo "bun.lock already in sync with package.json."
+            exit 0
+          fi
+          git config user.name  "dependabot[bot]"
+          git config user.email "49699333+dependabot[bot]@users.noreply.github.com"
+          git add bun.lock
+          git commit -m "chore(deps): sync bun.lock with package.json [dependabot skip]"
+          git push
+          echo "::notice::bun.lock re-synced and pushed; Docker Build Test will re-run and go green."
