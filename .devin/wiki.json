@@ -1,8 +1,42 @@
 {
   "repo_notes": [
     {
-      "content": "Docker containerization for DCYFR AI services. Document the Dockerfile patterns, multi-stage builds, container orchestration, environment configuration, and deployment strategies for containerized AI workloads.",
-      "author": "DCYFR Engineering"
+      "content": "Deprecated on npm as of 2026-02-27 and marked private in package.json. The wiki must say so on the first page: readers arriving from a search result need to know before they copy anything.",
+      "author": "rei-doc-specialist"
+    },
+    {
+      "content": "The repo is now a reference collection. Its useful content is the Dockerfiles, the egress policy script and the generator that emits them.",
+      "author": "rei-doc-specialist"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Status and Overview",
+      "purpose": "That this package is deprecated on npm and is now a template collection, what to use instead, and what remains worth copying."
+    },
+    {
+      "title": "Image Generation",
+      "purpose": "The generator under src/generator.ts: what it emits, the options it accepts, and the shape of a generated Dockerfile.",
+      "parent": "Status and Overview"
+    },
+    {
+      "title": "Validation",
+      "purpose": "The validator under src/validator.ts: the rules a generated or hand-written image must satisfy, and how failures are reported.",
+      "parent": "Status and Overview"
+    },
+    {
+      "title": "Build and Deploy Scripts",
+      "purpose": "The scripts under scripts/: build, run, deploy, the agent egress policy, and the OIDC test trigger.",
+      "parent": "Status and Overview"
+    },
+    {
+      "title": "Kubernetes Examples",
+      "purpose": "The Kubernetes examples and how a generated image is expected to be scheduled.",
+      "parent": "Status and Overview"
+    },
+    {
+      "title": "Testing",
+      "purpose": "The unit tests and the agent-image integration test, including what the integration test needs from its host."
     }
   ]
 }
