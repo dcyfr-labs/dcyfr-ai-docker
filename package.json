@@ -40,12 +40,13 @@
     "@changesets/cli": "^3.0.3",
     "@eslint/js": "^10.0.1",
     "@types/node": "^26.6.2",
-    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/coverage-v8": "^5.0.2",
     "eslint": "^10.11.0",
     "tsx": "^4.23.15",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.69.0",
-    "vitest": "^4.1.11"
+    "vite": "^8.0.16",
+    "vitest": "^5.0.2"
   },
   "keywords": [
     "dcyfr",
