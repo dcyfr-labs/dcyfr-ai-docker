@@ -110,7 +110,7 @@ dcyfr-ai-docker/
 ├── docker-compose.yml         # Development stack
 ├── docker-compose.prod.yml    # Production stack (Nginx + security)
 ├── docker-compose.agent.yml   # Autonomous agent container stack
-├── bun.lock                   # Bun lockfile (production image installs)
+├── package-lock.json          # The only lockfile (npm ci and the Bun image both install from it)
 ├── .dockerignore              # Build context exclusions
 ├── agent/
 │   ├── Dockerfile             # Agent container image
@@ -228,7 +228,7 @@ console.log(result.score); // 100
 
 ### Multi-Stage Build (Production)
 
-The production `Dockerfile` is **Bun-based** (`oven/bun:1-alpine`, pinned by digest) and installs from `bun.lock`:
+The production `Dockerfile` is **Bun-based** (`oven/bun:1-alpine`, pinned by digest) and installs from `package-lock.json`. The repo keeps no `bun.lock`: Bun migrates `package-lock.json` at install time, so there is one lockfile for Dependabot to update.
 
 ```
 Stage 1: deps        → bun install --frozen-lockfile --production (production deps only)
