@@ -18,8 +18,11 @@ WORKDIR /app
 # Install system dependencies for native modules (bcrypt, sqlite, etc.)
 RUN apk add --no-cache python3 make g++
 
-# Copy package files for dependency caching
-COPY package.json bun.lock* ./
+# Copy package files for dependency caching. package-lock.json is the repo's
+# only lockfile: with no bun.lock present, bun migrates it and installs exactly
+# the versions it pins, and --frozen-lockfile still fails if package.json has
+# drifted from it.
+COPY package.json package-lock.json ./
 
 # Install production dependencies only
 RUN bun install --frozen-lockfile --production
@@ -31,8 +34,8 @@ FROM oven/bun:1-alpine@sha256:7ed9f74c326d1c260abe247ac423ccbf5ac92af62bb442d515
 
 WORKDIR /app
 
-# Copy package files
-COPY package.json bun.lock* ./
+# Copy package files (package-lock.json only - see the deps stage)
+COPY package.json package-lock.json ./
 
 # Install all dependencies (including devDependencies for build)
 RUN bun install --frozen-lockfile
