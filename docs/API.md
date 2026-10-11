@@ -1160,7 +1160,7 @@ npm run lint
 
 ### Feature Requests
 
-Submit feature requests via [GitHub Issues](https://github.com/dcyfr/dcyfr-ai-docker/issues).
+Submit feature requests via [GitHub Issues](https://github.com/dcyfr-labs/dcyfr-ai-docker/issues).
 
 Priority given to:
 - Security improvements
@@ -1173,8 +1173,8 @@ Priority given to:
 ## Support
 
 - **Documentation:** https://dcyfr.ai/docs/ai-docker
-- **GitHub:** https://github.com/dcyfr/dcyfr-ai-docker
-- **Issues:** https://github.com/dcyfr/dcyfr-ai-docker/issues
+- **GitHub:** https://github.com/dcyfr-labs/dcyfr-ai-docker
+- **Issues:** https://github.com/dcyfr-labs/dcyfr-ai-docker/issues
 - **Email:** hello@dcyfr.ai
 - **Discord:** https://discord.gg/dcyfr
 

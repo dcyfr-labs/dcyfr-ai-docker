@@ -27,7 +27,7 @@ FROM node:22-slim AS runtime
 LABEL org.opencontainers.image.title="DCYFR Agent"
 LABEL org.opencontainers.image.description="Autonomous agent execution environment for DCYFR workspace"
 LABEL org.opencontainers.image.vendor="DCYFR"
-LABEL org.opencontainers.image.source="https://github.com/dcyfr/workspace"
+LABEL org.opencontainers.image.source="https://github.com/dcyfr-labs/dcyfr-ai-docker"
 
 # ------------------------------------------------------------------
 # Install runtime tools
