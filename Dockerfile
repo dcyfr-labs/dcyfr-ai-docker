@@ -54,7 +54,7 @@ FROM oven/bun:1-alpine@sha256:7ed9f74c326d1c260abe247ac423ccbf5ac92af62bb442d515
 
 # Security: add labels
 LABEL maintainer="DCYFR <hello@dcyfr.ai>"
-LABEL org.opencontainers.image.source="https://github.com/dcyfr/dcyfr-ai-docker"
+LABEL org.opencontainers.image.source="https://github.com/dcyfr-labs/dcyfr-ai-docker"
 LABEL org.opencontainers.image.description="DCYFR AI Application"
 
 # Security: run as non-root user
