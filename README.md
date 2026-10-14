@@ -297,7 +297,6 @@ Works with all DCYFR AI templates:
 | dcyfr-ai-rag      | ✅        | RAG pipeline + vector DB      |
 | dcyfr-ai-graphql  | ✅        | GraphQL API server            |
 | dcyfr-ai-api      | ✅        | REST API server               |
-| dcyfr-ai-web      | ✅        | Next.js full-stack            |
 | dcyfr-ai-react    | ✅        | Static SPA (Nginx serve)      |
 | dcyfr-ai-nodejs   | ✅        | Express server                |
 | dcyfr-ai-code-gen | ✅        | Code generation service       |
