@@ -316,4 +316,4 @@ MIT — see [LICENSE](./LICENSE) for details.
 
 ---
 
-**Built with ❤️ by [DCYFR](https://dcyfr.ai)** | [GitHub](https://github.com/dcyfr-labs)
+**Built with ❤️ by [DCYFR Labs](https://dcyfr.ai)** | [GitHub](https://github.com/dcyfr-labs)
