@@ -103,8 +103,9 @@ npm run test:coverage # Coverage
 ```bash
 npm run validate                    # Validate Dockerfile
 npm run generate                    # Generate Docker configs
-npm run build                       # Build dev images
-npm run build:prod                  # Build production images
+npm run build                       # Compile TypeScript (tsc)
+npm run build:docker                # Build dev images
+npm run build:docker:prod           # Build production images
 npm run up                          # Start dev stack
 npm run up:prod                     # Start production stack
 npm run down                        # Stop dev stack

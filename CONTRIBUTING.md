@@ -30,6 +30,10 @@ npm test
 - Add tests for new features
 - Update documentation as needed
 
+## Code of Conduct
+
+Participation is governed by the DCYFR Labs [Code of Conduct](https://github.com/dcyfr-labs/.github/blob/main/CODE_OF_CONDUCT.md). Report unacceptable behavior to conduct@dcyfr.ai.
+
 ## License
 
 By contributing, you agree that your contributions will be licensed under the MIT License.
